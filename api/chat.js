@@ -1,44 +1,37 @@
-import hf from "@huggingface/inference";
-import http from "http";
-
-const client = new hf.InferenceClient(process.env.HF_TOKEN);
+import { InferenceClient } from "@huggingface/inference";
 
 export default async function handler(req, res) {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  if (req.method !== "POST") {
+    return res.status(405).json({ error: "Only POST requests allowed" });
+  }
 
-  if (req.method === "OPTIONS") return res.status(200).send("OK");
-  if (req.method !== "POST") return res.status(405).send("Only POST allowed");
-
-  const userMessage = req.body.message;
+  const userMessage = req.body.message || "Hello!";
+  const client = new InferenceClient(process.env.HF_TOKEN);
+  let out = "";
 
   try {
-    const output = await client.textGeneration({
+    const stream = client.chatCompletionStream({
+      provider: "auto",
       model: "Qwen/Qwen2.5-1.5B-Instruct",
-      inputs: `
-You are Tejas Ghodke's AI assistant. Respond as Tejas would—friendly, confident, and concise. Add humor when appropriate.
-You know:
-- Tejas is a 3rd-year CS student at University of Cincinnati (Graduates May 2027)
-- Built a Snake game with PyTorch + CUDA
-- Built Tic-Tac-Toe AI in Flutter/Dart
-- Interned at iKomet (Python/SpaCy)
-- Works part-time as Aquatics Supervisor
-- Knows Python, Java, C++, Dart, HTML/CSS, SQL, JS
-
-User: ${userMessage}
-`,
-      parameters: {
-        max_new_tokens: 100,
-        temperature: 0.7,
-        top_p: 0.9
-      },
-      provider: "auto"
+      messages: [
+        {
+          role: "user",
+          content: userMessage,
+        },
+      ],
     });
 
-    res.status(200).json({ reply: output.generated_text.trim() });
+    for await (const chunk of stream) {
+      if (chunk.choices && chunk.choices.length > 0) {
+        const newContent = chunk.choices[0].delta.content;
+        out += newContent;
+      }
+    }
+
+    res.status(200).json({ reply: out.trim() });
+
   } catch (error) {
-    console.error("HF Error:", error?.response?.data || error.message);
-    res.status(500).json({ error: "HuggingFace API Error" });
+    console.error("HF Error:", error.message);
+    res.status(500).json({ reply: "Something went wrong 😬" });
   }
 }
