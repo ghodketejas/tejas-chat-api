@@ -1,4 +1,4 @@
-import hf from '@huggingface/inference';
+import { HfInference } from '@huggingface/inference';
 
 export default async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -11,7 +11,7 @@ export default async function handler(req, res) {
   const userMessage = req.body.message;
   console.log("User message:", userMessage);
 
-  const client = hf.HfInference({ apiKey: process.env.HUGGINGFACE_TOKEN });
+  const client = new HfInference(process.env.HUGGINGFACE_TOKEN);
 
   try {
     const result = await client.chatCompletion({
