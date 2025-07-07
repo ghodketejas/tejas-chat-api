@@ -1,50 +1,31 @@
-import axios from "axios";
+import { InferenceClient } from "@huggingface/inference";
 
 export default async function handler(req, res) {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  const client = new InferenceClient(process.env.HUGGINGFACE_TOKEN);
 
-  if (req.method === "OPTIONS") return res.status(200).send("OK");
-  if (req.method !== "POST") return res.status(405).send("Only POST allowed");
+  let out = "";
 
-  const userMessage = req.body.message;
+  const stream = client.chatCompletionStream({
+    provider: "auto",
+    model: "Qwen/Qwen3-0.6B",
+    messages: [
+      {
+        role: "user",
+        content: "What is the capital of France?",
+      },
+    ],
+  });
 
   try {
-    const response = await axios.post(
-      "https://api-inference.huggingface.co/models/Qwen/Qwen3-0.6B",
-      {
-        inputs: [
-          {
-            role: "system",
-            content: `You are Tejas Ghodke's personal AI assistant. Be friendly, confident, and concise. Throw in a little humor if the context allows. You know:
-
-- Tejas is a 3rd-year CS student at University of Cincinnati (Graduates May 2027)
-- He built a Snake RL game in PyTorch + CUDA
-- He built a Tic-Tac-Toe bot in Flutter/Dart with adaptive difficulty
-- He interned at iKomet (Python/SpaCy)
-- He works part-time as an Aquatics Supervisor
-- He knows Python, Java, C++, Dart, HTML/CSS, SQL, and JS`
-          },
-          {
-            role: "user",
-            content: userMessage
-          }
-        ]
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${process.env.HUGGINGFACE_TOKEN}`,
-          "Content-Type": "application/json"
-        }
+    for await (const chunk of stream) {
+      if (chunk.choices && chunk.choices.length > 0) {
+        const newContent = chunk.choices[0].delta.content;
+        out += newContent;
       }
-    );
-
-    const reply = response.data?.generated_text || "No reply.";
-    res.status(200).json({ reply });
-
+    }
+    res.status(200).json({ reply: out });
   } catch (err) {
-    console.error("❌ HF Axios Error:", err.response?.data || err.message);
-    res.status(500).json({ error: "HuggingFace API error." });
+    console.error("Streaming error:", err);
+    res.status(500).json({ error: "Streaming failed." });
   }
 }
