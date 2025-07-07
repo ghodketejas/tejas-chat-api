@@ -2,9 +2,12 @@
   "name": "tejas-chat-api",
   "version": "1.0.0",
   "type": "module",
-  "main": "index.js",
+  "main": "api/chat.js",
   "dependencies": {
     "@huggingface/inference": "^2.5.1",
     "axios": "^1.6.7"
+  },
+  "scripts": {
+    "start": "node api/chat.js"
   }
 }
