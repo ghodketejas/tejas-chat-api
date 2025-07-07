@@ -1,31 +1,21 @@
 import { InferenceClient } from "@huggingface/inference";
 
-export default async function handler(req, res) {
-  const client = new InferenceClient(process.env.HUGGINGFACE_TOKEN);
+const client = new InferenceClient(process.env.HF_TOKEN);
 
-  let out = "";
+const output = await client.textGeneration({
+	model: "meta-llama/Llama-3.2-1B",
+	inputs:
+  `
+  You are Tejas Ghodke's AI assistant. Respond as Tejas would—friendly, confident, and concise. Add humor when appropriate. 
+  You know:
+  - Tejas is a 3rd-year CS student at University of Cincinnati (Graduates May 2027)
+  - Built a Snake game with PyTorch + CUDA
+  - Built Tic-Tac-Toe AI in Flutter/Dart
+  - Interned at iKomet (Python/SpaCy)
+  - Works part-time as Aquatics Supervisor
+  - Knows Python, Java, C++, Dart, HTML/CSS, SQL, JS
+  `,
+	provider: "auto",
+});
 
-  const stream = client.chatCompletionStream({
-    provider: "auto",
-    model: "Qwen/Qwen3-0.6B",
-    messages: [
-      {
-        role: "user",
-        content: "What is the capital of France?",
-      },
-    ],
-  });
-
-  try {
-    for await (const chunk of stream) {
-      if (chunk.choices && chunk.choices.length > 0) {
-        const newContent = chunk.choices[0].delta.content;
-        out += newContent;
-      }
-    }
-    res.status(200).json({ reply: out });
-  } catch (err) {
-    console.error("Streaming error:", err);
-    res.status(500).json({ error: "Streaming failed." });
-  }
-}
+console.log(output);
