@@ -1,4 +1,4 @@
-import { InferenceClient } from "@huggingface/inference";
+import axios from "axios";
 
 export default async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -10,38 +10,41 @@ export default async function handler(req, res) {
 
   const userMessage = req.body.message;
 
-  const client = new InferenceClient(process.env.HUGGINGFACE_TOKEN);
-
   try {
-    const completion = await client.chatCompletion({
-      provider: "featherless-ai",
-      model: "Qwen/Qwen3-0.6B",
-      messages: [
-        {
-          role: "system",
-          content: `You are Tejas Ghodke's personal AI assistant. Respond in a friendly, confident, concise way, like Tejas would. Add humor if appropriate. You know:
-
-- Tejas is a 3rd-year CS student at the University of Cincinnati (Graduates May 2027)
-- He built a Snake RL game in PyTorch/CUDA
-- Built a Tic Tac Toe bot with adaptive difficulty using Flutter/Dart
-- Interned at iKomet (Python/SpaCy)
-- Works as Aquatics Supervisor
-- Knows Python, Java, C++, Dart, SQL, HTML/CSS, JS`,
+    const response = await axios.post(
+      "https://api-inference.huggingface.co/v1/chat/completions",
+      {
+        model: "Qwen/Qwen3-0.6B",
+        messages: [
+          {
+            role: "system",
+            content: `You are Tejas Ghodke's personal AI assistant. Be friendly, confident, and concise. Throw in a little humor if the context allows. You know:
+- Tejas is a 3rd-year CS student at University of Cincinnati (Graduates May 2027)
+- He built a Snake RL game in PyTorch + CUDA
+- He built a Tic-Tac-Toe bot in Flutter/Dart with adaptive difficulty
+- He interned at iKomet (Python/SpaCy)
+- He works part-time as an Aquatics Supervisor
+- He knows Python, Java, C++, Dart, HTML/CSS, SQL, and JS`,
+          },
+          {
+            role: "user",
+            content: userMessage,
+          },
+        ],
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.HUGGINGFACE_TOKEN}`,
+          "Content-Type": "application/json",
         },
-        {
-          role: "user",
-          content: userMessage,
-        },
-      ],
-      temperature: 0.7,
-      top_p: 0.9,
-    });
+      }
+    );
 
-    const output = completion.choices?.[0]?.message?.content?.trim() || "Sorry, no reply.";
-    res.status(200).json({ reply: output });
+    const reply = response.data.choices?.[0]?.message?.content || "No response.";
+    res.status(200).json({ reply });
 
   } catch (err) {
-    console.error("❌ HuggingFace Chat Error:", err?.response?.data || err.message);
-    res.status(500).json({ error: "HuggingFace API chat error." });
+    console.error("❌ HF Axios Error:", err.response?.data || err.message);
+    res.status(500).json({ error: "HuggingFace API error." });
   }
 }
