@@ -12,35 +12,35 @@ export default async function handler(req, res) {
 
   try {
     const response = await axios.post(
-      "https://api-inference.huggingface.co/v1/chat/completions",
+      "https://api-inference.huggingface.co/models/Qwen/Qwen3-0.6B",
       {
-        model: "Qwen/Qwen3-0.6B",
-        messages: [
+        inputs: [
           {
             role: "system",
             content: `You are Tejas Ghodke's personal AI assistant. Be friendly, confident, and concise. Throw in a little humor if the context allows. You know:
+
 - Tejas is a 3rd-year CS student at University of Cincinnati (Graduates May 2027)
 - He built a Snake RL game in PyTorch + CUDA
 - He built a Tic-Tac-Toe bot in Flutter/Dart with adaptive difficulty
 - He interned at iKomet (Python/SpaCy)
 - He works part-time as an Aquatics Supervisor
-- He knows Python, Java, C++, Dart, HTML/CSS, SQL, and JS`,
+- He knows Python, Java, C++, Dart, HTML/CSS, SQL, and JS`
           },
           {
             role: "user",
-            content: userMessage,
-          },
-        ],
+            content: userMessage
+          }
+        ]
       },
       {
         headers: {
           Authorization: `Bearer ${process.env.HUGGINGFACE_TOKEN}`,
-          "Content-Type": "application/json",
-        },
+          "Content-Type": "application/json"
+        }
       }
     );
 
-    const reply = response.data.choices?.[0]?.message?.content || "No response.";
+    const reply = response.data?.generated_text || "No reply.";
     res.status(200).json({ reply });
 
   } catch (err) {
