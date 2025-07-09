@@ -1,5 +1,5 @@
 // api/chat.js
-import { InferenceClient } from "@huggingface/inference";
+import hf from "@huggingface/inference";
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -10,16 +10,11 @@ export default async function handler(req, res) {
   const HF_API_TOKEN = process.env.HF_API_TOKEN;
 
   try {
-    const client = new InferenceClient(HF_API_TOKEN);
+    const client = hf(HF_API_TOKEN);
 
-    const result = await client.chatCompletion({
+    const result = await client.textGeneration({
       model: "Qwen/Qwen2.5-1.5B-Instruct",
-      messages: [
-        {
-          role: "user",
-          content: message,
-        },
-      ],
+      inputs: message,
     });
 
     const reply = result.choices?.[0]?.message?.content || "Sorry, I couldn't understand that.";
