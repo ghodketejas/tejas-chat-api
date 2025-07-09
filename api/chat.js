@@ -19,6 +19,16 @@ export default async function handler(req, res) {
   const { message } = req.body;
   const HF_API_TOKEN = process.env.HF_API_TOKEN;
 
+  const systemPrompt = {
+    role: "system",
+    content: `You are Tejas' personal AI assistant. 
+    Here's what you need to know:
+        - Tejas is a web developer and a student at the University of Cincinnati. 
+        - He has worked on web applications, AI chatbots, and security projects. 
+        - Only answer questions about Tejas' background, skills, and portfolio. 
+        - If a user asks about anything not related to Tejas, politely refuse to answer.`
+  };
+
   try {
     const response = await fetch("https://router.huggingface.co/featherless-ai/v1/chat/completions", {
       method: "POST",
@@ -28,6 +38,7 @@ export default async function handler(req, res) {
       },
       body: JSON.stringify({
         messages: [
+          systemPrompt,
           { role: "user", content: message }
         ],
         model: "Qwen/Qwen2.5-1.5B-Instruct",
