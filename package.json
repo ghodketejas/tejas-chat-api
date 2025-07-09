@@ -4,6 +4,7 @@
   "main": "api/chat.js",
   "type": "commonjs",
   "dependencies": {
-    "node-fetch": "^2.6.7"
+    "node-fetch": "^2.6.7",
+    "@huggingface/inference": "^2.5.0"
   }
 } 

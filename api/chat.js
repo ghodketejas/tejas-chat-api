@@ -1,5 +1,5 @@
 // api/chat.js
-const fetch = require('node-fetch');
+const { InferenceClient } = require("@huggingface/inference");
 
 module.exports = async (req, res) => {
   if (req.method !== 'POST') {
@@ -7,27 +7,26 @@ module.exports = async (req, res) => {
   }
 
   const { message } = req.body;
-
-  // Example: Using Hugging Face Inference API (replace with your model if needed)
   const HF_API_TOKEN = process.env.HF_API_TOKEN;
-  const HF_MODEL = 'Qwen/Qwen2.5-1.5B-Instruct'; // Updated to your chosen model
 
   try {
-    const hfRes = await fetch(
-      `https://api-inference.huggingface.co/models/${HF_MODEL}`,
-      {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${HF_API_TOKEN}`,
-          'Content-Type': 'application/json',
+    const client = new InferenceClient(HF_API_TOKEN);
+
+    // Use chatCompletion for a simple response
+    const result = await client.chatCompletion({
+      model: "Qwen/Qwen2.5-1.5B-Instruct",
+      messages: [
+        {
+          role: "user",
+          content: message,
         },
-        body: JSON.stringify({ inputs: message }),
-      }
-    );
-    const data = await hfRes.json();
-    const reply = data.generated_text || (data[0] && data[0].generated_text) || "Sorry, I couldn't understand that.";
+      ],
+    });
+
+    // The reply is in result.choices[0].message.content
+    const reply = result.choices?.[0]?.message?.content || "Sorry, I couldn't understand that.";
     res.status(200).json({ reply });
   } catch (err) {
-    res.status(500).json({ error: 'Hugging Face API error' });
+    res.status(500).json({ error: err.message || "Hugging Face API error" });
   }
 };
