@@ -41,7 +41,7 @@ export default async function handler(req, res) {
           systemPrompt,
           { role: "user", content: message }
         ],
-        model: "meta-llama/Llama-3-3B-Instruct",
+        model: "meta-llama/Llama-3.2-3B-Instruct",
         stream: false
       })
     });
