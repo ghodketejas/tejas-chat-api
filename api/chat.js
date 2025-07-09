@@ -46,6 +46,7 @@ export default async function handler(req, res) {
       })
     });
     const data = await response.json();
+    console.log("Hugging Face API response:", data);
     const reply = data.choices?.[0]?.message?.content || "Sorry, I couldn't understand that.";
     res.status(200).json({ reply });
   } catch (err) {
