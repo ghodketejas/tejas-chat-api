@@ -1,4 +1,5 @@
 // api/chat.js
+import fs from "fs/promises";
 import fetch from "node-fetch";
 
 export default async function handler(req, res) {
@@ -19,14 +20,30 @@ export default async function handler(req, res) {
   const { message } = req.body;
   const HF_API_TOKEN = process.env.HF_API_TOKEN;
 
+  // Read personal info from JSON file
+  let personalInfo = {
+    name: "Tejas",
+    bio: "Web developer and student at the University of Cincinnati.",
+    skills: ["Python", "JavaScript", "AI", "Security"],
+    projects: [
+      "Personal Portfolio Website",
+      "AI Chatbot",
+      "Web Security Analyzer"
+    ]
+  };
+  try {
+    const file = await fs.readFile("personal_info.json", "utf-8");
+    personalInfo = JSON.parse(file);
+  } catch (e) {
+    // Use default if file missing or invalid
+  }
+
+  // Format info for system prompt
+  const infoString = `Name: ${personalInfo.name}\nBio: ${personalInfo.bio}\nSkills: ${personalInfo.skills.join(", ")}\nProjects: ${personalInfo.projects.join(", ")}`;
+
   const systemPrompt = {
     role: "system",
-    content: `You are Tejas' personal AI assistant. 
-    Here's what you need to know:
-        - Tejas is a web developer and a student at the University of Cincinnati. 
-        - He has worked on web applications, AI chatbots, and security projects. 
-        - Only answer questions about Tejas' background, skills, and portfolio. 
-        - If a user asks about anything not related to Tejas, politely refuse to answer.`
+    content: `You are Tejas' personal AI assistant. Here is information about Tejas:\n${infoString}\nOnly answer questions about Tejas' background, skills, and portfolio. If a user asks about anything not related to Tejas, politely refuse to answer.`
   };
 
   try {
