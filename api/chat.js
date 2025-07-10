@@ -20,26 +20,23 @@ export default async function handler(req, res) {
   const { message } = req.body;
   const HF_API_TOKEN = process.env.HF_API_TOKEN;
 
-  // Read personal info from JSON file
-  let personalInfo = {
-    name: "Tejas",
-    bio: "Web developer and student at the University of Cincinnati.",
-    skills: ["Python", "JavaScript", "AI", "Security"],
-    projects: [
-      "Personal Portfolio Website",
-      "AI Chatbot",
-      "Web Security Analyzer"
-    ]
-  };
+  // Always require personal_info.json
+  let personalInfo;
   try {
     const file = await fs.readFile("personal_info.json", "utf-8");
     personalInfo = JSON.parse(file);
   } catch (e) {
-    // Use default if file missing or invalid
+    return res.status(500).json({ error: "personal_info.json is missing or invalid. The chatbot cannot answer questions without it." });
   }
 
   // Format info for system prompt
-  const infoString = `Name: ${personalInfo.name}\nBio: ${personalInfo.bio}\nSkills: ${personalInfo.skills.join(", ")}\nProjects: ${personalInfo.projects.join(", ")}`;
+  function formatExperience(exp) {
+    return exp.map(e => `- ${e.title} at ${e.company} (${e.location}, ${e.dates}): ${e.highlights.join(" ")}`).join("\n");
+  }
+  function formatProjects(projs) {
+    return projs.map(p => `- ${p.name} (${p.location}, ${p.dates}): ${p.highlights.join(" ")}`).join("\n");
+  }
+  const infoString = `Name: ${personalInfo.name}\nBio: ${personalInfo.bio}\nContact: ${personalInfo.contact?.email}, ${personalInfo.contact?.phone}, ${personalInfo.contact?.linkedin}, ${personalInfo.contact?.github}\nEducation: ${personalInfo.education?.degree} at ${personalInfo.education?.university}, Graduation: ${personalInfo.education?.graduation}, Honors: ${(personalInfo.education?.honors || []).join(", ")}, Coursework: ${(personalInfo.education?.relevant_coursework || []).join(", ")}\nExperience:\n${formatExperience(personalInfo.experience || [])}\nProjects:\n${formatProjects(personalInfo.projects || [])}\nSkills: Programming: ${(personalInfo.skills?.programming || []).join(", ")}; OS: ${(personalInfo.skills?.operating_systems || []).join(", ")}; Tools: ${(personalInfo.skills?.tools_software || []).join(", ")}\nAvailability: ${personalInfo.availability}`;
 
   const systemPrompt = {
     role: "system",
