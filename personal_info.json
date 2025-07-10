@@ -1,0 +1,79 @@
+{
+  "name": "Tejas Ghodke",
+  "bio": "Web developer and student at the University of Cincinnati, Cincinnati, OH. Available for COOP in Fall 2025.",
+  "contact": {
+    "location": "Cincinnati, OH",
+    "phone": "(513) 537-3591",
+    "email": "ghodketg@mail.uc.edu",
+    "linkedin": "https://linkedin.com/in/ghodketguc",
+    "github": "https://github.com/ghodketejas"
+  },
+  "education": {
+    "degree": "Bachelor of Science in Computer Science",
+    "university": "University of Cincinnati",
+    "graduation": "May 2027",
+    "honors": ["Dean’s List: Summer ’23, Fall ’23, Summer ’24, Fall ’24"],
+    "relevant_coursework": [
+      "Design and Analysis of Algorithms",
+      "Software Engineering",
+      "Database Design and Development",
+      "Probability and Statistics",
+      "Web Applications and Hacking"
+    ]
+  },
+  "experience": [
+    {
+      "company": "iKomet Technology Solutions",
+      "location": "Pune, India",
+      "title": "Junior Intern",
+      "dates": "February 2024 – April 2024",
+      "highlights": [
+        "Designed and implemented an advanced Python program using SpaCy and pandas to extract, parse, and organize specific data from large 5,000-word documents into formatted Excel spreadsheets for streamlined analysis.",
+        "Benchmarked against the previous internal tool, the new SpaCy-based program demonstrated a 25% speed improvement and 12% higher accuracy on a 10,000-page dataset, ensuring more reliable classification, structured representation, and seamless integration across the entire data pipeline infrastructure.",
+        "Demonstrated advanced problem-solving by designing a fully automated, scalable data pipeline that streamlined extraction, sorting, and presentation workflows, with outputs directly integrated into dynamic Power BI dashboards for enhanced data visualization accuracy and overall analytical efficiency."
+      ]
+    },
+    {
+      "company": "Campus Recreation Center",
+      "location": "Cincinnati, Ohio",
+      "title": "Aquatics Supervisor",
+      "dates": "May 2023 – Present",
+      "highlights": [
+        "Demonstrated proactive leadership within a diverse lifeguard team consisting of more than 60 lifeguards by fostering a collaborative, inclusive, and high-performance environment, and by providing ongoing mentorship, support, guidance, and constructive performance feedback to both new and veteran staff members.",
+        "Ensured full emergency preparedness by implementing detailed safety protocols, guiding lifeguards through drills, and delivering immediate, hands-on response during real-time incidents to safeguard all patrons and staff."
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "name": "Advanced Tic-Tac-Toe Game",
+      "location": "Cincinnati, Ohio",
+      "dates": "April 2024 – July 2024",
+      "type": "Personal Project",
+      "technologies": ["Flutter", "Dart", "Android Studio", "VScode", "Github", "Canva"],
+      "highlights": [
+        "Built an interactive mobile tic-tac-toe game using Flutter, featuring 10+ custom UI components and animations, developed over 8 weeks to showcase advanced app development and dynamic game logic.",
+        "Implemented an advanced Player vs. AI mode with 3 adaptive difficulty tiers, based on user performance, and a responsive UI tested across 4 device sizes to ensure consistency and maximize user experience.",
+        "Demonstrated strong proficiency in Dart and object-oriented programming by leveraging Flutter’s widget system, libraries, and best practices to build a polished, scalable, and visually engaging mobile game experience."
+      ]
+    },
+    {
+      "name": "Snake Game – AI Agent",
+      "location": "Cincinnati, Ohio",
+      "dates": "January 2025 – March 2025",
+      "type": "Personal Project",
+      "technologies": ["Anaconda", "PyTorch", "Pygame", "Scikit-learn", "matplotlib", "Reinforcement Learning", "DQN", "CUDA"],
+      "highlights": [
+        "Developed a reinforcement learning agent that autonomously plays Snake by optimizing decisions through trial-and-error, achieving ~300% average score improvement across 10,000+ episodes via reward-based strategy refinement.",
+        "Configured isolated Anaconda environments to manage over 15+ dependencies, ensuring reproducible model training and seamless switching between experimental configurations across multiple testing platforms.",
+        "Trained the DQN-based agent over 10,000+ episodes using GPU acceleration via an RTX 5070 Ti (16 GB GDDR7), significantly reducing training time, and visualized performance trends (reward progression, survival time, convergence) using matplotlib and scikit-learn to support iterative model optimization."
+      ]
+    }
+  ],
+  "skills": {
+    "programming": ["Python (Certified)", "Java (OCAJP) SE 8", "C/C++", "HTML and CSS", "PHP", "MATLAB", "Dart", "SQL", "R", "JavaScript"],
+    "operating_systems": ["Linux (multiple flavors)", "Windows", "MacOS", "Android", "iOS", "ChromeOS"],
+    "tools_software": ["SpaCy", "Pytorch", "Git", "Anaconda", "Docker", "Android Studio", "MySQL", "CUDA", "LabView", "MS Azure", "VMs"]
+  },
+  "availability": "Available for COOP in Fall 2025"
+} 
