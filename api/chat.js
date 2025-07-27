@@ -19,12 +19,18 @@ export default async function handler(req, res) {
   const { message } = req.body;
   const HF_API_TOKEN = process.env.HF_API_TOKEN;
 
-  // Read personal info from environment variable
+  // Read personal info from Vercel Blob
   let personalInfo;
   try {
-    personalInfo = JSON.parse(process.env.PERSONAL_INFO_JSON);
+    const blobRes = await fetch("https://9afcliaguh2tfza0.public.blob.vercel-storage.com/personal_info.json");
+
+    if (!blobRes.ok) {
+      throw new Error(`Failed to fetch blob: ${blobRes.status} ${blobRes.statusText}`);
+    }
+
+    personalInfo = await blobRes.json();
   } catch (e) {
-    return res.status(500).json({ error: "PERSONAL_INFO_JSON is missing or invalid. The chatbot cannot answer questions without it." });
+    return res.status(500).json({ error: "Failed to fetch personal_info.json from blob: " + e.message });
   }
 
   // Format info for system prompt
