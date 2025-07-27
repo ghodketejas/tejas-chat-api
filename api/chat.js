@@ -40,51 +40,57 @@ export default async function handler(req, res) {
   function formatProjects(projs) {
     return projs.map(p => `- ${p.name} (${p.location}, ${p.dates}): ${p.highlights.join(" ")}`).join("\n");
   }
-  // Format additional sections for clearer system prompt ------------------
-  function formatContact(contact = {}) {
-    return [
-      contact.location && `- Location: ${contact.location}`,
-      contact.phone && `- Phone: ${contact.phone}`,
-      contact.email && `- Email: ${contact.email}`,
-      contact.linkedin && `- LinkedIn: ${contact.linkedin}`,
-      contact.github && `- GitHub: ${contact.github}`
-    ].filter(Boolean).join("\n");
+
+  // Helper formatters for additional sections
+  function formatLanguages(langs = {}) {
+    return Object.entries(langs).map(([lang, level]) => `- ${lang}: ${level}`).join("\n");
+  }
+  function formatPreviousEducation(prev = []) {
+    return prev.map(e => `- ${e.institution} (${e.level}, ${e.location}${e.stream ? `, ${e.stream}` : ""})`).join("\n");
+  }
+  function formatFunFacts(facts = {}) {
+    const prettyKey = (k) => k.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase());
+    return Object.entries(facts).map(([k, v]) => `- ${prettyKey(k)}: ${v}`).join("\n");
   }
 
-  function formatEducation(edu = {}) {
-    const lines = [
-      `- ${edu.degree || ""} at ${edu.university || ""}`.trim(),
-      edu.graduation && `  Graduation: ${edu.graduation}`,
-      (edu.honors || []).length && `  Honors: ${(edu.honors || []).join(", ")}`,
-      (edu.relevant_coursework || []).length && `  Relevant Coursework: ${(edu.relevant_coursework || []).join(", ")}`
-    ];
-    return lines.filter(Boolean).join("\n");
-  }
+  const infoString = `
+=== Personal Profile ===
+Name: ${personalInfo.name}
+Bio: ${personalInfo.bio}
 
-  function formatSkills(skills = {}) {
-    return [
-      `- Programming: ${(skills.programming || []).join(", ")}`,
-      `- Operating Systems: ${(skills.operating_systems || []).join(", ")}`,
-      `- Tools & Software: ${(skills.tools_software || []).join(", ")}`
-    ].join("\n");
-  }
+=== Contact ===
+Location: ${personalInfo.contact?.location}
+Email: ${personalInfo.contact?.email}
+Phone: ${personalInfo.contact?.phone}
+LinkedIn: ${personalInfo.contact?.linkedin}
+GitHub: ${personalInfo.contact?.github}
 
-  const infoString = [
-    `Name: ${personalInfo.name}`,
-    `Bio: ${personalInfo.bio}`,
-    "",
-    `Contact:\n${formatContact(personalInfo.contact)}`,
-    "",
-    `Education:\n${formatEducation(personalInfo.education)}`,
-    "",
-    `Experience:\n${formatExperience(personalInfo.experience || [])}`,
-    "",
-    `Projects:\n${formatProjects(personalInfo.projects || [])}`,
-    "",
-    `Skills:\n${formatSkills(personalInfo.skills)}`,
-    "",
-    `Availability: ${personalInfo.availability}`
-  ].join("\n");
+=== Origin ===
+Hometown: ${personalInfo.origin?.hometown}
+Languages:\n${formatLanguages(personalInfo.origin?.languages || {})}
+
+=== Education ===
+Current: ${personalInfo.education?.degree} @ ${personalInfo.education?.university} (Graduation: ${personalInfo.education?.graduation})
+Honors: ${(personalInfo.education?.honors || []).join(", ")}
+Relevant Coursework: ${(personalInfo.education?.relevant_coursework || []).join(", ")}
+Previous Education:\n${formatPreviousEducation(personalInfo.previous_education || [])}
+
+=== Experience ===
+${formatExperience(personalInfo.experience || [])}
+
+=== Projects ===
+${formatProjects(personalInfo.projects || [])}
+
+=== Skills ===
+Programming: ${(personalInfo.skills?.programming || []).join(", ")}
+Operating Systems: ${(personalInfo.skills?.operating_systems || []).join(", ")}
+Tools & Software: ${(personalInfo.skills?.tools_software || []).join(", ")}
+
+=== Fun Facts ===
+${formatFunFacts(personalInfo["fun facts"] || {})}
+
+Availability: ${personalInfo.availability}
+  `.trim();
 
   const systemPrompt = {
     role: "system",
