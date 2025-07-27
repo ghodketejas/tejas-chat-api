@@ -8,6 +8,15 @@
     "linkedin": "https://linkedin.com/in/ghodketguc",
     "github": "https://github.com/ghodketejas"
   },
+  "origin": {
+    "hometown": "Pune, India",
+    "languages": {
+      "English": "Full Fluency",
+      "Hindi": "Full Fluency",
+      "Marathi": "Full Fluency",
+      "German": "Beginner"
+    }
+  },
   "education": {
     "degree": "Bachelor of Science in Computer Science",
     "university": "University of Cincinnati",
@@ -21,6 +30,21 @@
       "Web Applications and Hacking"
     ]
   },
+  "previous_education": [
+    {
+      "institution": "The Rewachand Bhojwani Academy",
+      "level": "High School (Grade 1 – 10)",
+      "location": "Pune, India",
+      "website": "https://www.rbacademy.org/"
+    },
+    {
+      "institution": "Sir Parshurambhau Junior College (SP College)",
+      "level": "Junior College (11th and 12th Grade)",
+      "location": "Pune, India",
+      "stream": "PCM (Physics, Chemistry, Mathematics) with Bifocal in Computer Science",
+      "website": "https://www.spcollegepune.ac.in/"
+    }
+  ],
   "experience": [
     {
       "company": "iKomet Technology Solutions",
@@ -50,11 +74,13 @@
       "location": "Cincinnati, Ohio",
       "dates": "April 2024 – July 2024",
       "type": "Personal Project",
-      "technologies": ["Flutter", "Dart", "Android Studio", "VScode", "Github", "Canva"],
+      "technologies": ["Flutter", "Dart", "Android Studio", "VS Code", "GitHub", "GitHub Actions", "Material Design", "StatefulWidget", "SharedPreferences", "Cross-platform Development"],
       "highlights": [
-        "Built an interactive mobile tic-tac-toe game using Flutter, featuring 10+ custom UI components and animations, developed over 8 weeks to showcase advanced app development and dynamic game logic.",
-        "Implemented an advanced Player vs. AI mode with 3 adaptive difficulty tiers, based on user performance, and a responsive UI tested across 4 device sizes to ensure consistency and maximize user experience.",
-        "Demonstrated strong proficiency in Dart and object-oriented programming by leveraging Flutter’s widget system, libraries, and best practices to build a polished, scalable, and visually engaging mobile game experience."
+        "Developed a modern, cross-platform implementation of Advanced Tic-Tac-Toe using Flutter and Dart, featuring a strategic 3x3 grid of tic-tac-toe boards with adaptive AI system and comprehensive statistics tracking.",
+        "Implemented an intelligent AI opponent with difficulty levels ranging from 0-100, featuring smart strategy evaluation, winning move detection, and opponent move blocking capabilities that adapt to player skill level.",
+        "Built a beautiful dark-themed UI with neon blue and orange accents, animated floating grid backgrounds, and responsive design that works seamlessly across Android, iOS, Web, Windows, macOS, and Linux platforms.",
+        "Established automated CI/CD pipeline using GitHub Actions for continuous deployment to GitHub Pages, ensuring the web version is always up-to-date with the latest features and improvements.",
+        "Integrated comprehensive data persistence using SharedPreferences for statistics tracking, game preferences, and user progress, creating a personalized gaming experience with persistent win/loss/draw records."
       ]
     },
     {
@@ -62,11 +88,13 @@
       "location": "Cincinnati, Ohio",
       "dates": "January 2025 – March 2025",
       "type": "Personal Project",
-      "technologies": ["Anaconda", "PyTorch", "Pygame", "Scikit-learn", "matplotlib", "Reinforcement Learning", "DQN", "CUDA"],
+      "technologies": ["Python 3.10", "PyTorch 2.x", "NumPy", "Matplotlib", "Pygame", "Scikit-learn", "Reinforcement Learning", "Deep Q-Learning (DQN)", "CUDA", "Anaconda", "Multiprocessing", "GPU Acceleration"],
       "highlights": [
-        "Developed a reinforcement learning agent that autonomously plays Snake by optimizing decisions through trial-and-error, achieving ~300% average score improvement across 10,000+ episodes via reward-based strategy refinement.",
-        "Configured isolated Anaconda environments to manage over 15+ dependencies, ensuring reproducible model training and seamless switching between experimental configurations across multiple testing platforms.",
-        "Trained the DQN-based agent over 10,000+ episodes using GPU acceleration via an RTX 5070 Ti (16 GB GDDR7), significantly reducing training time, and visualized performance trends (reward progression, survival time, convergence) using matplotlib and scikit-learn to support iterative model optimization."
+        "Enhanced Patrick Loeber's Snake-AI tutorial by implementing sophisticated reinforcement learning techniques, richer game state representations, and a fully reproducible training and benchmarking pipeline for autonomous gameplay optimization.",
+        "Developed two distinct AI agents: a baseline DQN agent and an enhanced agent with deeper neural networks, improved reward shaping, and richer state representations, achieving significant performance improvements through advanced machine learning techniques.",
+        "Implemented comprehensive training infrastructure with flexible configuration options, including visual popup interfaces for debug/train mode selection, customizable game speeds, and unique model/plot/CSV saving with sequential naming for easy benchmarking.",
+        "Utilized GPU acceleration with RTX 5070 Ti (16 GB GDDR7) for efficient model training, achieving ~300% average score improvement across 10,000+ episodes through reward-based strategy refinement and optimized neural network architectures.",
+        "Created automated training and comparison workflows with multiprocessing plotting capabilities, ensuring smooth visualization during training sessions and comprehensive performance analysis between different model configurations."
       ]
     }
   ],
@@ -75,5 +103,11 @@
     "operating_systems": ["Linux (multiple flavors)", "Windows", "MacOS", "Android", "iOS", "ChromeOS"],
     "tools_software": ["SpaCy", "Pytorch", "Git", "Anaconda", "Docker", "Android Studio", "MySQL", "CUDA", "LabView", "MS Azure", "VMs"]
   },
+  "fun_facts": {
+    "karate": "I am a black belt in Shotokan Karate, earned in 6th grade.",
+    "soccer": "I am a huge soccer fan and a regular player. I love FC Barcelona and was captain of my high school team.",
+    "gaming": "I enjoy gaming across all genres except tabletop RPGs like DnD. I play FIFA/EA FC, EA F1, and story-driven games like Hogwarts Legacy and Uncharted.",
+    "tech_preference": "I prefer Android over Apple in all categories."
+  },
   "availability": "Available for COOP in Fall 2025"
-} 
+}

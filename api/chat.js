@@ -42,7 +42,7 @@ export default async function handler(req, res) {
   };
 
   try {
-    const response = await fetch("https://router.huggingface.co/auto/v1/chat/completions", {
+    const response = await fetch("https://router.huggingface.co/v1/chat/completions", {
       method: "POST",
       headers: {
         "Authorization": `Bearer ${HF_API_TOKEN}`,
@@ -53,7 +53,7 @@ export default async function handler(req, res) {
           systemPrompt,
           { role: "user", content: message }
         ],
-        model: "meta-llama/Llama-3.2-3B-Instruct",
+        model: "mistralai/Mistral-7B-Instruct-v0.2",
         stream: false
       })
     });
