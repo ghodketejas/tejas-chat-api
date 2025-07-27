@@ -40,7 +40,51 @@ export default async function handler(req, res) {
   function formatProjects(projs) {
     return projs.map(p => `- ${p.name} (${p.location}, ${p.dates}): ${p.highlights.join(" ")}`).join("\n");
   }
-  const infoString = `Name: ${personalInfo.name}\nBio: ${personalInfo.bio}\nContact: ${personalInfo.contact?.email}, ${personalInfo.contact?.phone}, ${personalInfo.contact?.linkedin}, ${personalInfo.contact?.github}\nEducation: ${personalInfo.education?.degree} at ${personalInfo.education?.university}, Graduation: ${personalInfo.education?.graduation}, Honors: ${(personalInfo.education?.honors || []).join(", ")}, Coursework: ${(personalInfo.education?.relevant_coursework || []).join(", ")}\nExperience:\n${formatExperience(personalInfo.experience || [])}\nProjects:\n${formatProjects(personalInfo.projects || [])}\nSkills: Programming: ${(personalInfo.skills?.programming || []).join(", ")}; OS: ${(personalInfo.skills?.operating_systems || []).join(", ")}; Tools: ${(personalInfo.skills?.tools_software || []).join(", ")}\nAvailability: ${personalInfo.availability}`;
+  // Format additional sections for clearer system prompt ------------------
+  function formatContact(contact = {}) {
+    return [
+      contact.location && `- Location: ${contact.location}`,
+      contact.phone && `- Phone: ${contact.phone}`,
+      contact.email && `- Email: ${contact.email}`,
+      contact.linkedin && `- LinkedIn: ${contact.linkedin}`,
+      contact.github && `- GitHub: ${contact.github}`
+    ].filter(Boolean).join("\n");
+  }
+
+  function formatEducation(edu = {}) {
+    const lines = [
+      `- ${edu.degree || ""} at ${edu.university || ""}`.trim(),
+      edu.graduation && `  Graduation: ${edu.graduation}`,
+      (edu.honors || []).length && `  Honors: ${(edu.honors || []).join(", ")}`,
+      (edu.relevant_coursework || []).length && `  Relevant Coursework: ${(edu.relevant_coursework || []).join(", ")}`
+    ];
+    return lines.filter(Boolean).join("\n");
+  }
+
+  function formatSkills(skills = {}) {
+    return [
+      `- Programming: ${(skills.programming || []).join(", ")}`,
+      `- Operating Systems: ${(skills.operating_systems || []).join(", ")}`,
+      `- Tools & Software: ${(skills.tools_software || []).join(", ")}`
+    ].join("\n");
+  }
+
+  const infoString = [
+    `Name: ${personalInfo.name}`,
+    `Bio: ${personalInfo.bio}`,
+    "",
+    `Contact:\n${formatContact(personalInfo.contact)}`,
+    "",
+    `Education:\n${formatEducation(personalInfo.education)}`,
+    "",
+    `Experience:\n${formatExperience(personalInfo.experience || [])}`,
+    "",
+    `Projects:\n${formatProjects(personalInfo.projects || [])}`,
+    "",
+    `Skills:\n${formatSkills(personalInfo.skills)}`,
+    "",
+    `Availability: ${personalInfo.availability}`
+  ].join("\n");
 
   const systemPrompt = {
     role: "system",
