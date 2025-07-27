@@ -103,7 +103,7 @@
     "operating_systems": ["Linux (multiple flavors)", "Windows", "MacOS", "Android", "iOS", "ChromeOS"],
     "tools_software": ["SpaCy", "Pytorch", "Git", "Anaconda", "Docker", "Android Studio", "MySQL", "CUDA", "LabView", "MS Azure", "VMs"]
   },
-  "fun_facts": {
+  "fun facts": {
     "karate": "I am a black belt in Shotokan Karate, earned in 6th grade.",
     "soccer": "I am a huge soccer fan and a regular player. I love FC Barcelona and was captain of my high school team.",
     "gaming": "I enjoy gaming across all genres except tabletop RPGs like DnD. I play FIFA/EA FC, EA F1, and story-driven games like Hogwarts Legacy and Uncharted.",
